@@ -1,5 +1,5 @@
-FROM alpine:3.18
-LABEL MAINTAINER Andrew Sarver <asarver@sarverenterprises.com>
+FROM alpine:3.23
+LABEL MAINTAINER="Andrew Sarver <asarver@sarverenterprises.com>"
 
 # Install samba
 RUN apk --no-cache --no-progress upgrade && \
@@ -31,8 +31,9 @@ RUN apk --no-cache --no-progress upgrade && \
     echo '   printcap name = /dev/null' >>$file && \
     echo '   disable spoolss = yes' >>$file && \
     echo '   strict locking = no' >>$file && \
-    echo '   aio read size = 0' >>$file && \
-    echo '   aio write size = 0' >>$file && \
+    echo '   aio read size = 16384' >>$file && \
+    echo '   aio write size = 16384' >>$file && \
+    echo '   ea support = yes' >>$file && \
     echo '   vfs objects = catia fruit recycle streams_xattr' >>$file && \
     echo '   recycle:keeptree = yes' >>$file && \
     echo '   recycle:maxsize = 0' >>$file && \
@@ -47,11 +48,24 @@ RUN apk --no-cache --no-progress upgrade && \
     echo '   server max protocol = SMB3' >>$file && \
     echo '   server min protocol = SMB2_10' >>$file && \
     echo '' >>$file && \
-    echo '   # Time Machine' >>$file && \
+    echo '   # Performance (critical for macOS)' >>$file && \
+    echo '   server signing = disabled' >>$file && \
+    echo '   server multi channel support = yes' >>$file && \
+    echo '   deadtime = 30' >>$file && \
+    echo '   use sendfile = yes' >>$file && \
+    echo '   socket options = TCP_NODELAY IPTOS_LOWDELAY' >>$file && \
+    echo '' >>$file && \
+    echo '   # macOS optimizations (fruit module)' >>$file && \
+    echo '   fruit:metadata = stream' >>$file && \
+    echo '   fruit:model = MacSamba' >>$file && \
+    echo '   fruit:nfs_aces = no' >>$file && \
+    echo '   fruit:zero_file_id = yes' >>$file && \
+    echo '   fruit:encoding = native' >>$file && \
     echo '   fruit:delete_empty_adfiles = yes' >>$file && \
     echo '   fruit:time machine = yes' >>$file && \
     echo '   fruit:veto_appledouble = no' >>$file && \
     echo '   fruit:wipe_intentionally_left_blank_rfork = yes' >>$file && \
+    echo '   fruit:posix_rename = yes' >>$file && \
     echo '' >>$file && \
     rm -rf /tmp/*
 

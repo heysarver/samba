@@ -1,0 +1,3 @@
+docker-compose.yaml
+.env
+_etc_avahi_services_samba.service

@@ -2,3 +2,6 @@
 LICENSE
 README.md
 logo.jpg
+.env
+docker-compose.*
+_etc_avahi_services_samba.service

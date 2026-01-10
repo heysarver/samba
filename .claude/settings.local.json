@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "WebFetch(domain:knowledgebase.45drives.com)",
+      "WebFetch(domain:wiki.samba.org)"
+    ]
+  }
+}
